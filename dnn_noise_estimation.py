@@ -1,4 +1,4 @@
-import os, sys, logging, argparse
+import os, sys, logging, argparse, random
 #os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 import tensorflow as tf
@@ -7,9 +7,10 @@ import data
 import noise_estimator
 import chuah_et_al
 
-# разбираем входящие параметры
+# parse command line args
 parser = argparse.ArgumentParser(description='Noise estimation DNN training script')
 parser.add_argument('--log', help='Path to a log file.')
+parser.add_argument('--validate', action='store_true', help='Validate model based on image separate from training or testing data.')
 script_args = parser.parse_args()
 
 # setup logging before anything else
@@ -42,24 +43,47 @@ print("Log initialized")
 
 #tf.debugging.set_log_device_placement(True)
 
+# common procedure for training, evaluating and validating model
+def try_model(path, model_trainer, validate):
+    estimator = noise_estimator.NoiseEstimator(model_trainer)
+    try:
+        # if everything will load fine we can go to testing the model
+        estimator.load(path)
 
-# generating training data
-training_patches, training_labels = data.generate_training_dataset('train/')
-logging.info("Training data size %d", training_labels.get_shape().as_list()[0])
+         # now we can evaluate it on testing data
+        testing_patches, testing_labels = data.generate_dataset('test/')
+        logging.info("Testing data size %d", testing_labels.get_shape().as_list()[0])
+        accuracy = estimator.evaluate(testing_patches, testing_labels)
+        logging.info("Accuracy is %0.1f%%", 100 * accuracy)
 
-# load or train Chuah et al model
-chuah_et_all_estimator = noise_estimator.NoiseEstimator(chuah_et_al.get_model)
-try:
-    chuah_et_all_estimator.load("model")
-except IOError:
-    chuah_et_all_estimator.train(training_patches, training_labels, "model")
+    except IOError:
+        # looks like we don't have trained model, so train one from scratch
+        training_patches, training_labels = data.generate_dataset('train/')
+        logging.info("Training data size %d", training_labels.get_shape().as_list()[0])
+        estimator.train(training_patches, training_labels, path)
 
-# generate test data
-testing_patches, testing_labels = data.generate_training_dataset('test/')
-logging.info("Actual noise level is %d", tf.reduce_mean(testing_labels))
+        # in order to not strain GPU memory we leave testing for separate run of the script
 
-# run it though estimator
-output = chuah_et_all_estimator(testing_patches)
-prob_sum = tf.reduce_sum(output, 0)
-prob_sum = tf.reshape(prob_sum, -1)
-logging.info("Estimated noise level is %d", tf.math.argmax(prob_sum))
+    if validate:
+         # generate validation data
+        noise_level = random.randint(0, 9)
+        clean_image = data.load_image('validation/000000000009.jpg')
+        validation_image = data.generate_image(clean_image, noise_level)
+        logging.info("Actual noise level is %d", noise_level)
+
+        # show original and noised image in order to check that noise generation is fine
+        fig=plt.figure(figsize=(1, 2))
+        fig.add_subplot(1, 2, 1)
+        plt.imshow(clean_image)
+        fig.add_subplot(1, 2, 2)
+        plt.imshow(validation_image)
+        plt.show()
+
+        # run it though estimator
+        classes, confidences = estimator(validation_image)
+        for i in range(0, 9):
+            logging.info("Estimated confidence in noise level %d: %.3f", classes[i], confidences[i])
+
+# try Chuah et al model
+logging.info("Trying model from Chuan et al")
+try_model("chuah_et_al", chuah_et_al.train_model, script_args.validate)
