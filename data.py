@@ -31,7 +31,7 @@ def generate_dataset(folder_path):
 
             # now we are splitting image on patches
             images = tf.expand_dims(generated_image, 0)
-            new_patches = tf.image.extract_patches(images, [1, 32, 32, 1], [1, 16, 16, 1], [1, 1, 1, 1], 'VALID')
+            new_patches = tf.image.extract_patches(images, [1, 32, 32, 1], [1, 32, 32, 1], [1, 1, 1, 1], 'VALID')
             new_patches = tf.reshape(new_patches, [-1, 32, 32, 3])
             new_patches_count = new_patches.get_shape().as_list()[0]
             new_labels = tf.constant(noise_level, dtype=tf.int32, shape=(new_patches_count))

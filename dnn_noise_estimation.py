@@ -67,7 +67,7 @@ def try_model(path, model_trainer, validate):
     if validate:
          # generate validation data
         noise_level = random.randint(0, 9)
-        clean_image = data.load_image('validation/000000000009.jpg')
+        clean_image = data.load_image('validation/000000000071.jpg')
         validation_image = data.generate_image(clean_image, noise_level)
         logging.info("Actual noise level is %d", noise_level)
 
