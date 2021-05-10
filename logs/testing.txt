@@ -1,3 +1,3 @@
-2021-05-10 11:35:31,180: <INFO> Trying model from Chuan et al
-2021-05-10 11:35:33,363: <INFO> Testing data size 6885
-2021-05-10 11:35:35,210: <INFO> Accuracy is 87.2%
+2021-05-10 12:07:30,512: <INFO> Trying model from Chuan et al
+2021-05-10 12:07:32,658: <INFO> Testing data size 6885
+2021-05-10 12:07:34,500: <INFO> Accuracy is 87.6%

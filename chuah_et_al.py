@@ -32,10 +32,12 @@ def train_model(patches, labels):
     model = build_model()
     model.summary(print_fn=lambda x: logging.info(x))
 
-    # in paper they said about using 0.01 learning rate but that really depends on type of optimizer
+    # the paper states learning rate equal to 0.01 was used but that really depends on type of optimizer
     # for Adam it seems lesser values achieve actual results
-    model.compile(loss=tf.losses.SparseCategoricalCrossentropy(), optimizer=tf.optimizers.Adam(learning_rate = 0.0002))
+    model.compile(loss=tf.losses.SparseCategoricalCrossentropy(), optimizer=tf.optimizers.Adam(learning_rate = 0.0001))
 
     reporting = callbacks.ProgressLogging(evaluate_model, patches, labels, 5)
-    history = model.fit(patches, labels, 100, 100, verbose=0, callbacks=[reporting])
+
+    # the paper states that batch size of 100 and 100 epochs were used but I increased it to make learning more stable even though it slows down
+    history = model.fit(patches, labels, 256, 500, verbose=0, callbacks=[reporting])
     return model, history.history["loss"][-1]
