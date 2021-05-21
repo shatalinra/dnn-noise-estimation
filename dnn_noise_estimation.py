@@ -5,7 +5,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import data
 import noise_estimator
-import chuah_et_al
+import chuah_et_al, simple
 
 # parse command line args
 parser = argparse.ArgumentParser(description='Noise estimation DNN training script')
@@ -85,5 +85,9 @@ def try_model(path, model_trainer, validate):
             logging.info("Estimated confidence in noise level %d: %.3f", classes[i], confidences[i])
 
 # try Chuah et al model
-logging.info("Trying model from Chuan et al")
-try_model("chuah_et_al", chuah_et_al.train_model, script_args.validate)
+#logging.info("Trying model from Chuan et al")
+#try_model("chuah_et_al", chuah_et_al.train_model, script_args.validate)
+
+# try my simple model
+logging.info("Trying simple model")
+try_model("simple", simple.train_model, script_args.validate)
