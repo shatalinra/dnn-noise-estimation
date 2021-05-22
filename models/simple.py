@@ -35,5 +35,5 @@ def train_model(patches, labels):
     min_loss_change = tf.constant(0.01, dtype=tf.float32)
     reporting = callbacks.ProgressLogging(evaluate_model, patches, labels, 5)
 
-    history = model.fit(patches, labels, 100, 400, verbose=0, callbacks=[reporting])
+    history = model.fit(patches, labels, 100, 300, verbose=0, callbacks=[reporting])
     return model, history.history["loss"][-1]

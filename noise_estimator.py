@@ -5,7 +5,9 @@ import logging
 
 class NoiseEstimator(object):
     """wrapper for common functionality across noise estimation DNNs"""
-    def __init__(self, model_trainer, *args, **kwargs):
+    def __init__(self, patch_size, patch_stride, model_trainer, *args, **kwargs):
+        self._patch_size = patch_size
+        self._patch_stride = patch_stride
         self._model = None
         self._model_trainer = model_trainer
         return super().__init__(*args, **kwargs)
@@ -44,10 +46,10 @@ class NoiseEstimator(object):
         return accuracy
 
     def __call__(self, image):
-        # in order to estimate noise we break image on non-overlapping patches of size 32 x 32
+        # in order to estimate noise we break image on specified patches
         images = tf.expand_dims(image, 0)
-        patches = tf.image.extract_patches(images, [1, 32, 32, 1], [1, 32, 32, 1], [1, 1, 1, 1], 'VALID')
-        patches = tf.reshape(patches, [-1, 32, 32, 3])
+        patches = tf.image.extract_patches(images, [1, self._patch_size, self._patch_size, 1], [1, self._patch_stride, self._patch_stride, 1], [1, 1, 1, 1], 'VALID')
+        patches = tf.reshape(patches, [-1, self._patch_size, self._patch_size, 3])
 
         # now we feed these patches to the model
         output = self._model(patches)

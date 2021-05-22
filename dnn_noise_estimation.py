@@ -5,7 +5,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import data
 import noise_estimator
-from models import chuah_et_al, simple
+from models import chuah_et_al, simple, efficient
 
 # parse command line args
 parser = argparse.ArgumentParser(description='Noise estimation DNN training script')
@@ -44,22 +44,28 @@ print("Log initialized")
 #tf.debugging.set_log_device_placement(True)
 
 # common procedure for training, evaluating and validating model
-def try_model(name, model_trainer, validate):
-    estimator = noise_estimator.NoiseEstimator(model_trainer)
+def try_model(name, patch_size, patch_stride, model_trainer, validate):
+    logging.info("Trying " + name + " model")
+    estimator = noise_estimator.NoiseEstimator(patch_size, patch_stride, model_trainer)
     try:
         # if everything will load fine we can go to testing the model
         estimator.load("trained_models/" + name)
 
-         # now we can evaluate it on testing data
-        testing_patches, testing_labels = data.generate_dataset('test/')
+        # generate testing data from a portion of MS COCO 2017 train images
+        testing_patches, testing_labels = data.generate_dataset("../coco/2017/train/", 'dataset/test.txt', patch_size, patch_stride)
         logging.info("Testing data size %d", testing_labels.get_shape().as_list()[0])
+
+        # now evaluate accuracy
         accuracy = estimator.evaluate(testing_patches, testing_labels)
         logging.info("Accuracy is %0.1f%%", 100 * accuracy)
 
     except IOError:
-        # looks like we don't have trained model, so train one from scratch
-        training_patches, training_labels = data.generate_dataset('train/')
-        logging.info("Training data size %d", training_labels.get_shape().as_list()[0])
+        # looks like we don't have trained model, so we have to train one from scratch
+        # but first generate data on CPU in order to leave GPU RAM for model, training variables and batches
+        with tf.device('/device:CPU:0'):
+            training_patches, training_labels = data.generate_dataset("../coco/2017/train/", 'dataset/train.txt', patch_size, patch_stride)
+            logging.info("Training data size %d", training_labels.get_shape().as_list()[0])
+
         estimator.train(training_patches, training_labels, "trained_models/" + name)
 
         # in order to not strain GPU memory we leave testing for separate run of the script
@@ -67,7 +73,7 @@ def try_model(name, model_trainer, validate):
     if validate:
          # generate validation data
         noise_level = random.randint(0, 9)
-        clean_image = data.load_image('validation/000000000071.jpg')
+        clean_image = data.load_image('../coco/2017/train/000000001955.jpg') # just taking image which should not be in train or test set
         validation_image = data.generate_image(clean_image, noise_level)
         logging.info("Actual noise level is %d", noise_level)
 
@@ -84,10 +90,9 @@ def try_model(name, model_trainer, validate):
         for i in range(0, 9):
             logging.info("Estimated confidence in noise level %d: %.3f", classes[i], confidences[i])
 
-# try Chuah et al model
-#logging.info("Trying model from Chuan et al")
-#try_model("chuah_et_al", chuah_et_al.train_model, script_args.validate)
+# we start with trying models based on non-overlapping 32x32 patches which capture very little frame information
+#try_model("chuah_et_al", 32, 32, chuah_et_al.train_model, script_args.validate)
+try_model("simple", 32, 32, simple.train_model, script_args.validate)
 
-# try my simple model
-logging.info("Trying simple model")
-try_model("simple", simple.train_model, script_args.validate)
+# now we try pretrained models using overlapping 224x224 patches which should capture a lot of visual information
+#try_model("efficent", 224, 4*224, efficient.train_model, script_args.validate)
