@@ -1,6 +1,6 @@
 
 import tensorflow as tf
-import logging, callbacks
+import logging
 
 def build_model():
     backbone = tf.keras.applications.EfficientNetB0(include_top=False, input_shape=(224, 224, 3))

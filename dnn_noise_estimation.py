@@ -51,13 +51,37 @@ def try_model(name, patch_size, patch_stride, model_trainer, validate):
         # if everything will load fine we can go to testing the model
         estimator.load("trained_models/" + name)
 
-        # generate testing data from a portion of MS COCO 2017 train images
-        testing_patches, testing_labels = data.generate_dataset("../coco/2017/train/", 'dataset/test.txt', patch_size, patch_stride)
-        logging.info("Testing data size %d", testing_labels.get_shape().as_list()[0])
+        if validate:
+            # generate validation data by just taking image which should not be in train or test set
+            clean_image = data.load_image('../coco/2017/train/000000001955.jpg')
+            noise_level =  random.randint(0, 9)
+            validation_image = data.generate_image(clean_image, noise_level)
 
-        # now evaluate accuracy
-        accuracy = estimator.evaluate(testing_patches, testing_labels)
-        logging.info("Accuracy is %0.1f%%", 100 * accuracy)
+            # show original and noised image in order to check that noise generation is fine
+            fig=plt.figure(figsize=(8, 2))
+            fig.add_subplot(1, 3, 1)
+            plt.imshow(clean_image)
+            fig.add_subplot(1, 3, 2)
+            plt.imshow(validation_image)
+            plt.show()
+
+            # run both cases though estimator
+            logging.info("Case witn noise level %d", noise_level)
+            classes, confidences = estimator(validation_image)
+            for i in range(0, 10):
+                logging.info("\tEstimated confidence in noise level %d: %.3f", classes[i], confidences[i])
+
+        else:
+            # testing the model
+            # use CPU to support maybe longer but more representative evaluation on larger data
+            with tf.device('/device:CPU:0'):
+                # generate testing data from a portion of MS COCO 2017 train images
+                testing_patches, testing_labels = data.generate_dataset("../coco/2017/train/", 'dataset/test.txt', patch_size, patch_stride)
+                logging.info("Testing data size %d", testing_labels.get_shape().as_list()[0])
+
+                # now evaluate accuracy
+                accuracy = estimator.evaluate(testing_patches, testing_labels)
+                logging.info("Accuracy is %0.1f%%", 100 * accuracy)
 
     except IOError:
         # looks like we don't have trained model, so we have to train one from scratch
@@ -70,29 +94,10 @@ def try_model(name, patch_size, patch_stride, model_trainer, validate):
 
         # in order to not strain GPU memory we leave testing for separate run of the script
 
-    if validate:
-         # generate validation data
-        noise_level = random.randint(0, 9)
-        clean_image = data.load_image('../coco/2017/train/000000001955.jpg') # just taking image which should not be in train or test set
-        validation_image = data.generate_image(clean_image, noise_level)
-        logging.info("Actual noise level is %d", noise_level)
-
-        # show original and noised image in order to check that noise generation is fine
-        fig=plt.figure(figsize=(1, 2))
-        fig.add_subplot(1, 2, 1)
-        plt.imshow(clean_image)
-        fig.add_subplot(1, 2, 2)
-        plt.imshow(validation_image)
-        plt.show()
-
-        # run it though estimator
-        classes, confidences = estimator(validation_image)
-        for i in range(0, 9):
-            logging.info("Estimated confidence in noise level %d: %.3f", classes[i], confidences[i])
 
 # we start with trying models based on non-overlapping 32x32 patches which capture very little frame information
-#try_model("chuah_et_al", 32, 32, chuah_et_al.train_model, script_args.validate)
-try_model("simple", 32, 32, simple.train_model, script_args.validate)
+try_model("chuah_et_al", 32, 32, chuah_et_al.train_model, script_args.validate)
+#try_model("simple", 32, 32, simple.train_model, script_args.validate)
 
 # now we try pretrained models using overlapping 224x224 patches which should capture a lot of visual information
 #try_model("efficent", 224, 4*224, efficient.train_model, script_args.validate)

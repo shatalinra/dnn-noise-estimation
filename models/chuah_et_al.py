@@ -4,7 +4,7 @@
 # so it would be something more of the inspired by their paper than actual thing they did.
 
 import tensorflow as tf
-import logging, callbacks
+import logging
 
 def build_model():
     model =  tf.keras.Sequential(name = "chuan_et_al")
@@ -19,15 +19,6 @@ def build_model():
     model.add(tf.keras.layers.Softmax(name = "conv-4-softmax"))
     return model
 
-def evaluate_model(model, patches, labels):
-    loss_function = tf.keras.losses.SparseCategoricalCrossentropy()
-    with tf.GradientTape() as tape:
-        output = model(patches)
-        loss = loss_function(labels, output)
-        grad = tape.gradient(loss, model.trainable_variables)
-
-    return loss, tf.linalg.global_norm(grad)
-
 def train_model(patches, labels):
     model = build_model()
     model.summary(print_fn=lambda x: logging.info(x))
@@ -36,8 +27,6 @@ def train_model(patches, labels):
     # for Adam it seems lesser values achieve actual results
     model.compile(loss=tf.losses.SparseCategoricalCrossentropy(), optimizer=tf.optimizers.Adam(learning_rate = 0.0001))
 
-    reporting = callbacks.ProgressLogging(evaluate_model, patches, labels, 5)
-
     # the paper states that batch size of 100 and 100 epochs were used but I increased it to make learning more stable even though it slows down
-    history = model.fit(patches, labels, 256, 500, verbose=0, callbacks=[reporting])
-    return model, history.history["loss"][-1]
+    history = model.fit(patches, labels, 256, 500, verbose=2)
+    return model, history.history["loss"]

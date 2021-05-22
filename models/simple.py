@@ -1,5 +1,5 @@
 import tensorflow as tf
-import logging, callbacks
+import logging
 
 def build_model():
     model =  tf.keras.Sequential(name = "simple")

@@ -32,7 +32,7 @@ def generate_dataset(path_prefix, image_indices_path, patch_size, patch_stride):
     # load source images and generate images with different amount of noise
     for source_image_path in image_paths:
         source_image = load_image(source_image_path)
-        for noise_level in range(0, 9):
+        for noise_level in range(0, 10):
             generated_image = generate_image(source_image, noise_level)
 
             # now we are splitting image on patches
@@ -52,4 +52,4 @@ def generate_dataset(path_prefix, image_indices_path, patch_size, patch_stride):
             else:
                 labels = tf.concat([labels, new_labels], 0)
 
-    return tf.constant(patches), tf.constant(labels)
+    return patches, labels

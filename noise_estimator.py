@@ -14,6 +14,10 @@ class NoiseEstimator(object):
 
     def load(self, path):
          self._model = tf.keras.models.load_model(path)
+
+         # recompile model with metrics needed for evaluation
+         self._model.compile(metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
+
          self._model.summary()
 
     def train(self, patches, labels, path):
@@ -25,9 +29,15 @@ class NoiseEstimator(object):
         best_loss = tf.constant(100.0, dtype=tf.float32)
         for init_attempt in range(init_attempts):
             logging.info("Training model: attempt %d", init_attempt)
-            model, loss = self._model_trainer(patches, labels)
-            if loss < best_loss:
-                best_loss = loss
+            model, losses = self._model_trainer(patches, labels)
+
+            # save to log all metrics
+            for epoch, loss in enumerate(losses):
+                logging.info("Epoch %d, loss %.4f", epoch, losses[epoch])
+
+            last_loss = losses[-1]
+            if last_loss < best_loss:
+                best_loss = last_loss
                 best_model = model
 
         best_model.save(path)
@@ -36,14 +46,9 @@ class NoiseEstimator(object):
         self._model = best_model
 
     def evaluate(self, patches, labels):
-        output = self._model(patches)
-        classes = tf.argmax(output, 3)
-        classes = tf.reshape(classes, -1)
-        classes = tf.cast(classes, dtype = tf.int32)
-
-        matches = tf.math.count_nonzero(labels == classes)
-        accuracy = float(matches) / labels.get_shape().as_list()[0]
-        return accuracy
+        # such small batch size slows down evaluation but it makes results more stable and accurate
+        metrics = self._model.evaluate(patches, labels, batch_size = 1, verbose = 0, return_dict=True)
+        return metrics["sparse_categorical_accuracy"]
 
     def __call__(self, image):
         # in order to estimate noise we break image on specified patches
