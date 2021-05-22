@@ -5,7 +5,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import data
 import noise_estimator
-import chuah_et_al, simple
+from models import chuah_et_al, simple
 
 # parse command line args
 parser = argparse.ArgumentParser(description='Noise estimation DNN training script')
@@ -44,11 +44,11 @@ print("Log initialized")
 #tf.debugging.set_log_device_placement(True)
 
 # common procedure for training, evaluating and validating model
-def try_model(path, model_trainer, validate):
+def try_model(name, model_trainer, validate):
     estimator = noise_estimator.NoiseEstimator(model_trainer)
     try:
         # if everything will load fine we can go to testing the model
-        estimator.load(path)
+        estimator.load("trained_models/" + name)
 
          # now we can evaluate it on testing data
         testing_patches, testing_labels = data.generate_dataset('test/')
@@ -60,7 +60,7 @@ def try_model(path, model_trainer, validate):
         # looks like we don't have trained model, so train one from scratch
         training_patches, training_labels = data.generate_dataset('train/')
         logging.info("Training data size %d", training_labels.get_shape().as_list()[0])
-        estimator.train(training_patches, training_labels, path)
+        estimator.train(training_patches, training_labels, "trained_models/" + name)
 
         # in order to not strain GPU memory we leave testing for separate run of the script
 
