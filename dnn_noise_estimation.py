@@ -59,9 +59,9 @@ def try_model(name, patch_size, patch_stride, model_trainer, validate):
 
             # show original and noised image in order to check that noise generation is fine
             fig=plt.figure(figsize=(8, 2))
-            fig.add_subplot(1, 3, 1)
+            fig.add_subplot(1, 2, 1)
             plt.imshow(clean_image)
-            fig.add_subplot(1, 3, 2)
+            fig.add_subplot(1, 2, 2)
             plt.imshow(validation_image)
             plt.show()
 
@@ -96,8 +96,8 @@ def try_model(name, patch_size, patch_stride, model_trainer, validate):
 
 
 # we start with trying models based on non-overlapping 32x32 patches which capture very little frame information
-try_model("chuah_et_al", 32, 32, chuah_et_al.train_model, script_args.validate)
-#try_model("simple", 32, 32, simple.train_model, script_args.validate)
+#try_model("chuah_et_al", 32, 32, chuah_et_al.train_model, script_args.validate)
+try_model("simple", 32, 32, simple.train_model, script_args.validate)
 
 # now we try pretrained models using overlapping 224x224 patches which should capture a lot of visual information
 #try_model("efficent", 224, 4*224, efficient.train_model, script_args.validate)

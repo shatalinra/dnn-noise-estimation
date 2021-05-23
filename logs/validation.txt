@@ -1,12 +1,12 @@
-2021-05-22 21:29:09,904: <INFO> Trying chuah_et_al model
-2021-05-22 21:29:13,760: <INFO> Case witn noise level 7
-2021-05-22 21:29:15,457: <INFO> 	Estimated confidence in noise level 7: 0.993
-2021-05-22 21:29:15,458: <INFO> 	Estimated confidence in noise level 8: 0.004
-2021-05-22 21:29:15,458: <INFO> 	Estimated confidence in noise level 6: 0.003
-2021-05-22 21:29:15,458: <INFO> 	Estimated confidence in noise level 5: 0.000
-2021-05-22 21:29:15,458: <INFO> 	Estimated confidence in noise level 9: 0.000
-2021-05-22 21:29:15,459: <INFO> 	Estimated confidence in noise level 0: 0.000
-2021-05-22 21:29:15,459: <INFO> 	Estimated confidence in noise level 4: 0.000
-2021-05-22 21:29:15,459: <INFO> 	Estimated confidence in noise level 2: 0.000
-2021-05-22 21:29:15,459: <INFO> 	Estimated confidence in noise level 1: 0.000
-2021-05-22 21:29:15,459: <INFO> 	Estimated confidence in noise level 3: 0.000
+2021-05-23 10:06:21,483: <INFO> Trying simple model
+2021-05-23 10:06:27,737: <INFO> Case witn noise level 8
+2021-05-23 10:06:29,423: <INFO> 	Estimated confidence in noise level 8: 0.967
+2021-05-23 10:06:29,423: <INFO> 	Estimated confidence in noise level 7: 0.017
+2021-05-23 10:06:29,424: <INFO> 	Estimated confidence in noise level 9: 0.016
+2021-05-23 10:06:29,424: <INFO> 	Estimated confidence in noise level 6: 0.000
+2021-05-23 10:06:29,425: <INFO> 	Estimated confidence in noise level 5: 0.000
+2021-05-23 10:06:29,425: <INFO> 	Estimated confidence in noise level 4: 0.000
+2021-05-23 10:06:29,425: <INFO> 	Estimated confidence in noise level 3: 0.000
+2021-05-23 10:06:29,427: <INFO> 	Estimated confidence in noise level 2: 0.000
+2021-05-23 10:06:29,429: <INFO> 	Estimated confidence in noise level 1: 0.000
+2021-05-23 10:06:29,429: <INFO> 	Estimated confidence in noise level 0: 0.000

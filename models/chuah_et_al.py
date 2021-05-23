@@ -6,7 +6,7 @@
 import tensorflow as tf
 import logging
 
-def build_model():
+def train_model(patches, labels):
     model =  tf.keras.Sequential(name = "chuan_et_al")
     model.add(tf.keras.Input(shape = [32, 32, 3]))
     model.add(tf.keras.layers.Conv2D(filters=20, kernel_size = 5, strides = 1, name = "conv-1"))
@@ -17,10 +17,6 @@ def build_model():
     model.add(tf.keras.layers.ReLU(name = "conv-3-relu"))
     model.add(tf.keras.layers.Conv2D(filters=10, kernel_size = 2, strides = 1, name = "conv-4"))
     model.add(tf.keras.layers.Softmax(name = "conv-4-softmax"))
-    return model
-
-def train_model(patches, labels):
-    model = build_model()
     model.summary(print_fn=lambda x: logging.info(x))
 
     # the paper states learning rate equal to 0.01 was used but that really depends on type of optimizer

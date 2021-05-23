@@ -1,3 +1,3 @@
-2021-05-22 21:29:52,908: <INFO> Trying chuah_et_al model
-2021-05-22 21:30:54,158: <INFO> Testing data size 81640
-2021-05-22 21:34:22,305: <INFO> Accuracy is 98.0%
+2021-05-23 10:01:42,034: <INFO> Trying simple model
+2021-05-23 10:02:48,967: <INFO> Testing data size 81640
+2021-05-23 10:05:32,659: <INFO> Accuracy is 97.8%
