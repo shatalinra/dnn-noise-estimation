@@ -1,36 +1,30 @@
-
 import tensorflow as tf
 import logging
 
-def build_model():
-    backbone = tf.keras.applications.EfficientNetB0(include_top=False, input_shape=(224, 224, 3))
+def preprocess(patches):
+    # our preprocessing would be huge because we want basically embeddings from already trained network
+    # in order to use RAM economically split inference on batches
+    backbone = tf.keras.applications.EfficientNetB0(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
     backbone.trainable = False
 
-    model =  tf.keras.Sequential(name = "efficient")
-    model.add(backbone)
+    subsets = []
+    total_count = patches.get_shape().as_list()[0]
+    for i in range(0, total_count, 256):
+        slice = patches[i: min(i + 256, total_count)]
+        subset = backbone(255 * slice, training = False)
+        subsets.append(subset)
+    return tf.concat(subsets, 0)
+
+def train_model(data, labels):
+    model = tf.keras.Sequential(name = "efficient")
+    model.add(tf.keras.Input(shape = [7, 7, 1280]))  # our data should be efficient embedding
     model.add(tf.keras.layers.GlobalAveragePooling2D(name="pool"))
+    model.add(tf.keras.layers.Dropout(0.5, name="dropout"))
     model.add(tf.keras.layers.Dense(10, name="dense"))
     model.add(tf.keras.layers.Softmax(name = "softmax"))
-    return model
-
-
-def evaluate_model(model, patches, labels):
-    loss_function = tf.keras.losses.SparseCategoricalCrossentropy()
-    with tf.GradientTape() as tape:
-        output = model(patches)
-        loss = loss_function(labels, output)
-        grad = tape.gradient(loss, model.trainable_variables)
-
-    return loss, tf.linalg.global_norm(grad)
-
-def train_model(patches, labels):
-    model = build_model()
     model.summary(print_fn=lambda x: logging.info(x))
 
-    model.compile(loss=tf.losses.SparseCategoricalCrossentropy(), optimizer=tf.optimizers.RMSprop())
+    model.compile(loss=tf.losses.SparseCategoricalCrossentropy(), optimizer=tf.optimizers.Adam(learning_rate = 0.001))
 
-    min_loss_change = tf.constant(0.01, dtype=tf.float32)
-    reporting = callbacks.ProgressLogging(evaluate_model, patches, labels, 5)
-
-    history = model.fit(patches, labels, 1, 400, verbose=0, callbacks=[reporting])
-    return model, history.history["loss"][-1]
+    history = model.fit(data, labels, 64, 400, verbose=2)
+    return model, history.history["loss"]

@@ -44,9 +44,9 @@ print("Log initialized")
 #tf.debugging.set_log_device_placement(True)
 
 # common procedure for training, evaluating and validating model
-def try_model(name, patch_size, patch_stride, model_trainer, validate):
+def try_model(name, patch_size, patch_stride, preprocessing, model_trainer, validate):
     logging.info("Trying " + name + " model")
-    estimator = noise_estimator.NoiseEstimator(patch_size, patch_stride, model_trainer)
+    estimator = noise_estimator.NoiseEstimator(patch_size, patch_stride, preprocessing, model_trainer)
     try:
         # if everything will load fine we can go to testing the model
         estimator.load("trained_models/" + name)
@@ -97,7 +97,7 @@ def try_model(name, patch_size, patch_stride, model_trainer, validate):
 
 # we start with trying models based on non-overlapping 32x32 patches which capture very little frame information
 #try_model("chuah_et_al", 32, 32, chuah_et_al.train_model, script_args.validate)
-try_model("simple", 32, 32, simple.train_model, script_args.validate)
+#try_model("simple", 32, 32, simple.train_model, script_args.validate)
 
 # now we try pretrained models using overlapping 224x224 patches which should capture a lot of visual information
-#try_model("efficent", 224, 4*224, efficient.train_model, script_args.validate)
+try_model("efficent", 224, 224, efficient.preprocess, efficient.train_model, script_args.validate)

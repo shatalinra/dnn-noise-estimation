@@ -1,3 +1,3 @@
-2021-05-23 10:01:42,034: <INFO> Trying simple model
-2021-05-23 10:02:48,967: <INFO> Testing data size 81640
-2021-05-23 10:05:32,659: <INFO> Accuracy is 97.8%
+2021-05-25 22:30:24,595: <INFO> Trying efficent model
+2021-05-25 22:31:03,793: <INFO> Testing data size 920
+2021-05-25 22:32:06,876: <INFO> Accuracy is 45.0%

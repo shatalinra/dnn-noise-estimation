@@ -5,9 +5,10 @@ import logging
 
 class NoiseEstimator(object):
     """wrapper for common functionality across noise estimation DNNs"""
-    def __init__(self, patch_size, patch_stride, model_trainer, *args, **kwargs):
+    def __init__(self, patch_size, patch_stride, preprocessing, model_trainer, *args, **kwargs):
         self._patch_size = patch_size
         self._patch_stride = patch_stride
+        self._preprocessing = preprocessing
         self._model = None
         self._model_trainer = model_trainer
         return super().__init__(*args, **kwargs)
@@ -24,12 +25,18 @@ class NoiseEstimator(object):
         dir = Path(path)
         dir.mkdir(0o777, True, True)
 
+        # preprocessing data if procedure is not none
+        data = patches
+        if self._preprocessing is not None:
+            with tf.device('/device:CPU:0'):
+                data = self._preprocessing(patches)
+
         init_attempts = 3
         best_model = None
         best_loss = tf.constant(100.0, dtype=tf.float32)
         for init_attempt in range(init_attempts):
             logging.info("Training model: attempt %d", init_attempt)
-            model, losses = self._model_trainer(patches, labels)
+            model, losses = self._model_trainer(data, labels)
 
             # save to log all metrics
             for epoch, loss in enumerate(losses):
@@ -46,8 +53,14 @@ class NoiseEstimator(object):
         self._model = best_model
 
     def evaluate(self, patches, labels):
+        # preprocessing data if procedure is not none
+        data = patches
+        if self._preprocessing is not None:
+            with tf.device('/device:CPU:0'):
+                data = self._preprocessing(patches)
+
         # such small batch size slows down evaluation but it makes results more stable and accurate
-        metrics = self._model.evaluate(patches, labels, batch_size = 1, verbose = 0, return_dict=True)
+        metrics = self._model.evaluate(data, labels, batch_size = 1, verbose = 0, return_dict=True)
         return metrics["sparse_categorical_accuracy"]
 
     def __call__(self, image):
@@ -56,8 +69,14 @@ class NoiseEstimator(object):
         patches = tf.image.extract_patches(images, [1, self._patch_size, self._patch_size, 1], [1, self._patch_stride, self._patch_stride, 1], [1, 1, 1, 1], 'VALID')
         patches = tf.reshape(patches, [-1, self._patch_size, self._patch_size, 3])
 
+        # preprocessing data if procedure is not none
+        data = patches
+        if self._preprocessing is not None:
+            with tf.device('/device:CPU:0'):
+                data = self._preprocessing(patches)
+
         # now we feed these patches to the model
-        output = self._model(patches)
+        output = self._model(data)
 
         # for each patch we are getting propabilities of each class but we need one estimate for whole image
         # lets try just summing those and then normalizing them once again
