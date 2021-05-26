@@ -93,4 +93,4 @@ def try_model(name, patch_size, patch_stride, batch_size, preprocessing, model_t
 #try_model("simple", 32, 32, simple.train_model, script_args.validate)
 
 # now we try pretrained models using overlapping 224x224 patches which should capture a lot of visual information
-try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)
+try_model("efficent", 224, 224, 32, efficient.preprocess, efficient.train_model, script_args.validate)

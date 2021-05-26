@@ -32,7 +32,11 @@ def generate_noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stri
             if not image_path.exists():
                 continue
 
+            # MS COCO contains grayscale images, skip them
             source_image = load_image(image_path)
+            if source_image.get_shape().as_list()[2] != 3:
+                continue
+
             for noise_level in range(0, 10):
                 generated_image = generate_image(source_image, noise_level)
 
@@ -69,5 +73,6 @@ def generate_noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stri
 
 def noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stride, batch_size):
     generator = generate_noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stride, batch_size)
+
     output_signature = (tf.TensorSpec(shape=(batch_size, patch_size, patch_size, 3), dtype=tf.float32), tf.TensorSpec(shape=(batch_size), dtype=tf.int32))
     return tf.data.Dataset.from_generator(generator, output_signature = output_signature)

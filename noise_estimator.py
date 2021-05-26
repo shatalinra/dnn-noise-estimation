@@ -26,17 +26,17 @@ class NoiseEstimator(object):
         dir.mkdir(0o777, True, True)
 
         # preprocessing data if procedure is not none
-        data = patches
+        prepared_dataset = dataset
         if self._preprocessing is not None:
-            with tf.device('/device:CPU:0'):
-                data = self._preprocessing(patches)
+            prepared_dataset = dataset.map(self._preprocessing, num_parallel_calls=tf.data.AUTOTUNE)
+        prepared_dataset = prepared_dataset.cache()
 
         init_attempts = 3
         best_model = None
         best_loss = tf.constant(100.0, dtype=tf.float32)
         for init_attempt in range(init_attempts):
             logging.info("Training model: attempt %d", init_attempt)
-            model, losses = self._model_trainer(data, labels)
+            model, losses = self._model_trainer(prepared_dataset)
 
             # save to log all metrics
             for epoch, loss in enumerate(losses):
@@ -69,13 +69,11 @@ class NoiseEstimator(object):
         patches = tf.reshape(patches, [-1, self._patch_size, self._patch_size, 3])
 
         # preprocessing data if procedure is not none
-        data = patches
         if self._preprocessing is not None:
-            with tf.device('/device:CPU:0'):
-                data = self._preprocessing(patches)
+            patches, labels = self._preprocessing(patches, None)
 
         # now we feed these patches to the model
-        output = self._model(data)
+        output = self._model(patches)
 
         # for each patch we are getting propabilities of each class but we need one estimate for whole image
         # lets try just summing those and then normalizing them once again

@@ -1,0 +1,12 @@
+2021-05-26 21:38:49,599: <INFO> Trying efficent model
+2021-05-26 21:39:00,034: <INFO> Case witn noise level 1
+2021-05-26 21:39:00,433: <INFO> 	Estimated confidence in noise level 3: 0.502
+2021-05-26 21:39:00,434: <INFO> 	Estimated confidence in noise level 0: 0.463
+2021-05-26 21:39:00,435: <INFO> 	Estimated confidence in noise level 1: 0.035
+2021-05-26 21:39:00,435: <INFO> 	Estimated confidence in noise level 4: 0.000
+2021-05-26 21:39:00,436: <INFO> 	Estimated confidence in noise level 2: 0.000
+2021-05-26 21:39:00,436: <INFO> 	Estimated confidence in noise level 6: 0.000
+2021-05-26 21:39:00,437: <INFO> 	Estimated confidence in noise level 5: 0.000
+2021-05-26 21:39:00,437: <INFO> 	Estimated confidence in noise level 7: 0.000
+2021-05-26 21:39:00,438: <INFO> 	Estimated confidence in noise level 9: 0.000
+2021-05-26 21:39:00,439: <INFO> 	Estimated confidence in noise level 8: 0.000
