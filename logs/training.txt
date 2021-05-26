@@ -1297,3 +1297,382 @@ Instructions for updating:
 This property should not be used in TensorFlow 2.0, as updates are applied automatically.
 2021-05-25 22:29:53,240: <INFO> Assets written to: trained_models/efficent\assets
 2021-05-25 22:29:53,285: <INFO> Best loss is 0.624963
+2021-05-26 09:26:29,310: <INFO> Trying efficent model
+2021-05-26 09:28:29,372: <INFO> Trying efficent model
+2021-05-26 09:34:00,135: <INFO> Trying efficent model
+2021-05-26 09:42:26,320: <INFO> Trying efficent model
+2021-05-26 09:42:26,326: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 09:43:23,430: <INFO> Trying efficent model
+2021-05-26 09:43:23,436: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 09:43:32,207: <ERROR> Uncaught exception
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy\__main__.py", line 45, in <module>
+    cli.main()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 430, in main
+    run()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 267, in run_file
+    runpy.run_path(options.target, run_name=compat.force_str("__main__"))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 263, in run_path
+    pkg_name=pkg_name, script_name=fname)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 96, in _run_module_code
+    mod_name, mod_spec, pkg_name, script_name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 96, in <module>
+    try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 78, in try_model
+    dataset = data.noisy_dataset("../coco/2017/train/", 154, 359, patch_size, patch_stride, batch_size)
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 86, in noisy_dataset
+    return tf.data.Dataset.from_generator(generator, output_signature = output_signature)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\util\deprecation.py", line 535, in new_func
+    return func(*args, **kwargs)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 877, in from_generator
+    raise TypeError("`generator` must be callable.")
+TypeError: `generator` must be callable.
+2021-05-26 09:46:13,991: <INFO> Trying efficent model
+2021-05-26 09:46:13,997: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 09:47:39,452: <INFO> Trying efficent model
+2021-05-26 09:47:39,457: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 09:47:46,792: <ERROR> Uncaught exception
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy\__main__.py", line 45, in <module>
+    cli.main()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 430, in main
+    run()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 267, in run_file
+    runpy.run_path(options.target, run_name=compat.force_str("__main__"))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 263, in run_path
+    pkg_name=pkg_name, script_name=fname)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 96, in _run_module_code
+    mod_name, mod_spec, pkg_name, script_name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 96, in <module>
+    try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 78, in try_model
+    dataset = data.noisy_dataset("../coco/2017/train/", 154, 359, patch_size, patch_stride, batch_size)
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 86, in noisy_dataset
+    return tf.data.Dataset.from_generator(generator, output_signature = output_signature)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\util\deprecation.py", line 535, in new_func
+    return func(*args, **kwargs)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 877, in from_generator
+    raise TypeError("`generator` must be callable.")
+TypeError: `generator` must be callable.
+2021-05-26 09:49:04,168: <INFO> Trying efficent model
+2021-05-26 09:49:04,174: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 09:50:11,706: <INFO> Trying efficent model
+2021-05-26 09:50:11,712: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 09:50:18,970: <ERROR> Uncaught exception
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy\__main__.py", line 45, in <module>
+    cli.main()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 430, in main
+    run()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 267, in run_file
+    runpy.run_path(options.target, run_name=compat.force_str("__main__"))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 263, in run_path
+    pkg_name=pkg_name, script_name=fname)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 96, in _run_module_code
+    mod_name, mod_spec, pkg_name, script_name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 96, in <module>
+    try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 81, in try_model
+    accuracy = estimator.evaluate(dataset)
+  File "F:\git\deep\dnn-noise-estimation\noise_estimator.py", line 59, in evaluate
+    prepared_dataset = dataset.map(self._preprocessing)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 1925, in map
+    return MapDataset(self, map_func, preserve_cardinality=True)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 4487, in __init__
+    use_legacy_function=use_legacy_function)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 3712, in __init__
+    self._function = fn_factory()
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\function.py", line 3135, in get_concrete_function
+    *args, **kwargs)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\function.py", line 3100, in _get_concrete_function_garbage_collected
+    graph_function, _ = self._maybe_define_function(args, kwargs)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\function.py", line 3444, in _maybe_define_function
+    graph_function = self._create_graph_function(args, kwargs)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\function.py", line 3289, in _create_graph_function
+    capture_by_value=self._capture_by_value),
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\framework\func_graph.py", line 999, in func_graph_from_py_func
+    func_outputs = python_func(*func_args, **func_kwargs)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 3687, in wrapped_fn
+    ret = wrapper_helper(*args)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 3617, in wrapper_helper
+    ret = autograph.tf_convert(self._func, ag_ctx)(*nested_args)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 695, in wrapper
+    raise e.ag_error_metadata.to_exception(e)
+TypeError: in user code:
+
+
+    TypeError: tf__preprocess() takes 1 positional argument but 2 were given
+
+2021-05-26 09:53:17,722: <INFO> Trying efficent model
+2021-05-26 09:53:17,729: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 09:54:43,828: <INFO> Trying efficent model
+2021-05-26 09:54:43,834: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 09:56:51,899: <INFO> Trying efficent model
+2021-05-26 09:56:51,905: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:01:37,685: <INFO> Trying efficent model
+2021-05-26 10:01:37,691: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:02:29,040: <INFO> Trying efficent model
+2021-05-26 10:02:29,046: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:03:19,186: <INFO> Trying efficent model
+2021-05-26 10:03:19,192: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:03:30,203: <ERROR> Uncaught exception
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy\__main__.py", line 45, in <module>
+    cli.main()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 430, in main
+    run()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 267, in run_file
+    runpy.run_path(options.target, run_name=compat.force_str("__main__"))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 263, in run_path
+    pkg_name=pkg_name, script_name=fname)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 96, in _run_module_code
+    mod_name, mod_spec, pkg_name, script_name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 96, in <module>
+    try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 81, in try_model
+    accuracy = estimator.evaluate(dataset)
+  File "F:\git\deep\dnn-noise-estimation\noise_estimator.py", line 62, in evaluate
+    metrics = self._model.evaluate(prepared_dataset, verbose = 0, return_dict=True)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\keras\engine\training.py", line 1489, in evaluate
+    tmp_logs = self.test_function(iterator)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\def_function.py", line 889, in __call__
+    result = self._call(*args, **kwds)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\def_function.py", line 957, in _call
+    filtered_flat_args, self._concrete_stateful_fn.captured_inputs)  # pylint: disable=protected-access
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\function.py", line 1961, in _call_flat
+    ctx, args, cancellation_manager=cancellation_manager))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\function.py", line 596, in call
+    ctx=ctx)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\execute.py", line 60, in quick_execute
+    inputs, attrs, num_outputs)
+tensorflow.python.framework.errors_impl.InvalidArgumentError:  UnicodeDecodeError: 'utf-8' codec can't decode byte 0xcd in position 81: invalid continuation byte
+Traceback (most recent call last):
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\script_ops.py", line 249, in __call__
+    ret = func(*args)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 645, in wrapper
+    return func(*args, **kwargs)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 961, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 31, in generator
+    source_image = load_image(image_path)
+
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 5, in load_image
+    image_file = tf.io.read_file(str(path))
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\io_ops.py", line 138, in read_file
+    return gen_io_ops.read_file(filename, name)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\gen_io_ops.py", line 555, in read_file
+    filename, name=name, ctx=_ctx)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\gen_io_ops.py", line 578, in read_file_eager_fallback
+    attrs=_attrs, ctx=ctx, name=name)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\execute.py", line 60, in quick_execute
+    inputs, attrs, num_outputs)
+
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xcd in position 81: invalid continuation byte
+
+
+	 [[{{node PyFunc}}]]
+	 [[IteratorGetNext]] [Op:__inference_test_function_6454]
+
+Function call stack:
+test_function
+
+2021-05-26 10:04:54,329: <INFO> Trying efficent model
+2021-05-26 10:04:54,336: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:05:01,620: <ERROR> Uncaught exception
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy\__main__.py", line 45, in <module>
+    cli.main()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 430, in main
+    run()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 267, in run_file
+    runpy.run_path(options.target, run_name=compat.force_str("__main__"))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 263, in run_path
+    pkg_name=pkg_name, script_name=fname)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 96, in _run_module_code
+    mod_name, mod_spec, pkg_name, script_name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 96, in <module>
+    try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 81, in try_model
+    accuracy = estimator.evaluate(dataset)
+  File "F:\git\deep\dnn-noise-estimation\noise_estimator.py", line 62, in evaluate
+    metrics = self._model.evaluate(prepared_dataset, verbose = 0, return_dict=True)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\keras\engine\training.py", line 1489, in evaluate
+    tmp_logs = self.test_function(iterator)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\def_function.py", line 889, in __call__
+    result = self._call(*args, **kwds)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\def_function.py", line 957, in _call
+    filtered_flat_args, self._concrete_stateful_fn.captured_inputs)  # pylint: disable=protected-access
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\function.py", line 1961, in _call_flat
+    ctx, args, cancellation_manager=cancellation_manager))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\function.py", line 596, in call
+    ctx=ctx)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\execute.py", line 60, in quick_execute
+    inputs, attrs, num_outputs)
+tensorflow.python.framework.errors_impl.InvalidArgumentError:  UnicodeDecodeError: 'utf-8' codec can't decode byte 0xcd in position 81: invalid continuation byte
+Traceback (most recent call last):
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\script_ops.py", line 249, in __call__
+    ret = func(*args)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\autograph\impl\api.py", line 645, in wrapper
+    return func(*args, **kwargs)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\data\ops\dataset_ops.py", line 961, in generator_py_func
+    values = next(generator_state.get_iterator(iterator_id))
+
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 31, in generator
+    source_image = load_image(image_path)
+
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 5, in load_image
+    image_file = tf.io.read_file(str(path))
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\io_ops.py", line 138, in read_file
+    return gen_io_ops.read_file(filename, name)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\gen_io_ops.py", line 555, in read_file
+    filename, name=name, ctx=_ctx)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\gen_io_ops.py", line 578, in read_file_eager_fallback
+    attrs=_attrs, ctx=ctx, name=name)
+
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\execute.py", line 60, in quick_execute
+    inputs, attrs, num_outputs)
+
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xcd in position 81: invalid continuation byte
+
+
+	 [[{{node PyFunc}}]]
+	 [[IteratorGetNext]] [Op:__inference_test_function_6454]
+
+Function call stack:
+test_function
+
+2021-05-26 10:06:08,929: <INFO> Trying efficent model
+2021-05-26 10:06:08,935: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:07:12,938: <INFO> Trying efficent model
+2021-05-26 10:07:12,945: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:08:45,824: <ERROR> Uncaught exception
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy\__main__.py", line 45, in <module>
+    cli.main()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 430, in main
+    run()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 267, in run_file
+    runpy.run_path(options.target, run_name=compat.force_str("__main__"))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 263, in run_path
+    pkg_name=pkg_name, script_name=fname)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 96, in _run_module_code
+    mod_name, mod_spec, pkg_name, script_name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 96, in <module>
+    try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 78, in try_model
+    dataset = data.noisy_dataset("../coco/2017/train/", 154, 359, patch_size, patch_stride, batch_size)
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 71, in noisy_dataset
+    for x in generator():
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 31, in generator
+    source_image = load_image(image_path)
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 5, in load_image
+    image_file = tf.io.read_file(str(path))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\io_ops.py", line 138, in read_file
+    return gen_io_ops.read_file(filename, name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\gen_io_ops.py", line 555, in read_file
+    filename, name=name, ctx=_ctx)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\gen_io_ops.py", line 578, in read_file_eager_fallback
+    attrs=_attrs, ctx=ctx, name=name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\execute.py", line 60, in quick_execute
+    inputs, attrs, num_outputs)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xcd in position 81: invalid continuation byte
+2021-05-26 10:09:12,164: <INFO> Trying efficent model
+2021-05-26 10:09:12,171: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:10:00,447: <INFO> Trying efficent model
+2021-05-26 10:10:00,454: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:10:08,783: <ERROR> Uncaught exception
+Traceback (most recent call last):
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy\__main__.py", line 45, in <module>
+    cli.main()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 430, in main
+    run()
+  File "c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\microsoft\python\core\debugpy/..\debugpy\server\cli.py", line 267, in run_file
+    runpy.run_path(options.target, run_name=compat.force_str("__main__"))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 263, in run_path
+    pkg_name=pkg_name, script_name=fname)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 96, in _run_module_code
+    mod_name, mod_spec, pkg_name, script_name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 96, in <module>
+    try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)
+  File "F:\git\deep\dnn-noise-estimation\dnn_noise_estimation.py", line 78, in try_model
+    dataset = data.noisy_dataset("../coco/2017/train/", 154, 359, patch_size, patch_stride, batch_size)
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 71, in noisy_dataset
+    for x in generator():
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 31, in generator
+    source_image = load_image(image_path)
+  File "F:\git\deep\dnn-noise-estimation\data.py", line 5, in load_image
+    image_file = tf.io.read_file(str(path))
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\io_ops.py", line 138, in read_file
+    return gen_io_ops.read_file(filename, name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\gen_io_ops.py", line 555, in read_file
+    filename, name=name, ctx=_ctx)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\ops\gen_io_ops.py", line 578, in read_file_eager_fallback
+    attrs=_attrs, ctx=ctx, name=name)
+  File "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\lib\site-packages\tensorflow\python\eager\execute.py", line 60, in quick_execute
+    inputs, attrs, num_outputs)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xcd in position 81: invalid continuation byte
+2021-05-26 10:10:39,205: <INFO> Trying efficent model
+2021-05-26 10:10:39,211: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:11:21,559: <INFO> Trying efficent model
+2021-05-26 10:11:21,567: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:12:07,150: <INFO> Trying efficent model
+2021-05-26 10:12:07,157: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:14:55,225: <INFO> Trying efficent model
+2021-05-26 10:14:55,232: <WARNING> SavedModel saved prior to TF 2.5 detected when loading Keras model. Please ensure that you are saving the model with model.save() or tf.keras.models.save_model(), *NOT* tf.saved_model.save(). To confirm, there should be a file named "keras_metadata.pb" in the SavedModel directory.
+2021-05-26 10:16:29,710: <INFO> Accuracy is 45.4%

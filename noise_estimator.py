@@ -21,7 +21,7 @@ class NoiseEstimator(object):
 
          self._model.summary()
 
-    def train(self, patches, labels, path):
+    def train(self, dataset, path):
         dir = Path(path)
         dir.mkdir(0o777, True, True)
 
@@ -52,15 +52,14 @@ class NoiseEstimator(object):
 
         self._model = best_model
 
-    def evaluate(self, patches, labels):
+    def evaluate(self, dataset):
         # preprocessing data if procedure is not none
-        data = patches
+        prepared_dataset = dataset
         if self._preprocessing is not None:
-            with tf.device('/device:CPU:0'):
-                data = self._preprocessing(patches)
+            prepared_dataset = dataset.map(self._preprocessing)
 
         # such small batch size slows down evaluation but it makes results more stable and accurate
-        metrics = self._model.evaluate(data, labels, batch_size = 1, verbose = 0, return_dict=True)
+        metrics = self._model.evaluate(prepared_dataset, verbose = 0, return_dict=True)
         return metrics["sparse_categorical_accuracy"]
 
     def __call__(self, image):

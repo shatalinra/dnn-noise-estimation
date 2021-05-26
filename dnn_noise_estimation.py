@@ -44,7 +44,7 @@ print("Log initialized")
 #tf.debugging.set_log_device_placement(True)
 
 # common procedure for training, evaluating and validating model
-def try_model(name, patch_size, patch_stride, preprocessing, model_trainer, validate):
+def try_model(name, patch_size, patch_stride, batch_size, preprocessing, model_trainer, validate):
     logging.info("Trying " + name + " model")
     estimator = noise_estimator.NoiseEstimator(patch_size, patch_stride, preprocessing, model_trainer)
     try:
@@ -74,25 +74,18 @@ def try_model(name, patch_size, patch_stride, preprocessing, model_trainer, vali
         else:
             # testing the model
             # use CPU to support maybe longer but more representative evaluation on larger data
-            with tf.device('/device:CPU:0'):
-                # generate testing data from a portion of MS COCO 2017 train images
-                testing_patches, testing_labels = data.generate_dataset("../coco/2017/train/", 'dataset/test.txt', patch_size, patch_stride)
-                logging.info("Testing data size %d", testing_labels.get_shape().as_list()[0])
+            # generate testing data from a portion of MS COCO 2017 train images
+            dataset = data.noisy_dataset("../coco/2017/train/", 154, 359, patch_size, patch_stride, batch_size)
 
-                # now evaluate accuracy
-                accuracy = estimator.evaluate(testing_patches, testing_labels)
-                logging.info("Accuracy is %0.1f%%", 100 * accuracy)
+            # now evaluate accuracy
+            accuracy = estimator.evaluate(dataset)
+            logging.info("Accuracy is %0.1f%%", 100 * accuracy)
 
     except IOError:
         # looks like we don't have trained model, so we have to train one from scratch
         # but first generate data on CPU in order to leave GPU RAM for model, training variables and batches
-        with tf.device('/device:CPU:0'):
-            training_patches, training_labels = data.generate_dataset("../coco/2017/train/", 'dataset/train.txt', patch_size, patch_stride)
-            logging.info("Training data size %d", training_labels.get_shape().as_list()[0])
-
-        estimator.train(training_patches, training_labels, "trained_models/" + name)
-
-        # in order to not strain GPU memory we leave testing for separate run of the script
+        dataset = data.noisy_dataset("../coco/2017/train/", 9, 151, patch_size, patch_stride, batch_size)
+        estimator.train(dataset, "trained_models/" + name)
 
 
 # we start with trying models based on non-overlapping 32x32 patches which capture very little frame information
@@ -100,4 +93,4 @@ def try_model(name, patch_size, patch_stride, preprocessing, model_trainer, vali
 #try_model("simple", 32, 32, simple.train_model, script_args.validate)
 
 # now we try pretrained models using overlapping 224x224 patches which should capture a lot of visual information
-try_model("efficent", 224, 224, efficient.preprocess, efficient.train_model, script_args.validate)
+try_model("efficent", 224, 224, 64, efficient.preprocess, efficient.train_model, script_args.validate)

@@ -1,19 +1,12 @@
 import tensorflow as tf
 import logging
 
-def preprocess(patches):
-    # our preprocessing would be huge because we want basically embeddings from already trained network
-    # in order to use RAM economically split inference on batches
-    backbone = tf.keras.applications.EfficientNetB0(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
-    backbone.trainable = False
 
-    subsets = []
-    total_count = patches.get_shape().as_list()[0]
-    for i in range(0, total_count, 256):
-        slice = patches[i: min(i + 256, total_count)]
-        subset = backbone(255 * slice, training = False)
-        subsets.append(subset)
-    return tf.concat(subsets, 0)
+backbone = tf.keras.applications.EfficientNetB0(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+backbone.trainable = False
+
+def preprocess(patches, labels):
+    return backbone(255 * patches, training = False), labels
 
 def train_model(data, labels):
     model = tf.keras.Sequential(name = "efficient")
