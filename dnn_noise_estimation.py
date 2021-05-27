@@ -75,7 +75,8 @@ def try_model(name, patch_size, patch_stride, batch_size, preprocessing, model_t
             # testing the model
             # use CPU to support maybe longer but more representative evaluation on larger data
             # generate testing data from a portion of MS COCO 2017 train images
-            dataset = data.noisy_dataset("../coco/2017/train/", 154, 359, patch_size, patch_stride, batch_size)
+
+            dataset = data.NoisyDataset("../coco/2017/train/", 154, 359, patch_size, patch_stride, batch_size)
 
             # now evaluate accuracy
             accuracy = estimator.evaluate(dataset)
@@ -84,13 +85,13 @@ def try_model(name, patch_size, patch_stride, batch_size, preprocessing, model_t
     except IOError:
         # looks like we don't have trained model, so we have to train one from scratch
         # but first generate data on CPU in order to leave GPU RAM for model, training variables and batches
-        dataset = data.noisy_dataset("../coco/2017/train/", 9, 151, patch_size, patch_stride, batch_size)
+        dataset = data.NoisyDataset("../coco/2017/train/", 9, 151, patch_size, patch_stride, batch_size)
         estimator.train(dataset, "trained_models/" + name)
 
 
 # we start with trying models based on non-overlapping 32x32 patches which capture very little frame information
-#try_model("chuah_et_al", 32, 32, chuah_et_al.train_model, script_args.validate)
-#try_model("simple", 32, 32, simple.train_model, script_args.validate)
+try_model("chuah_et_al", 32, 32, 256, None, chuah_et_al.train_model, script_args.validate)
+try_model("simple", 32, 32, 100, None, simple.train_model, script_args.validate)
 
 # now we try pretrained models using overlapping 224x224 patches which should capture a lot of visual information
 try_model("efficent", 224, 224, 32, efficient.preprocess, efficient.train_model, script_args.validate)

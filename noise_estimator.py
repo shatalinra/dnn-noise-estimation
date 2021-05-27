@@ -21,22 +21,30 @@ class NoiseEstimator(object):
 
          self._model.summary()
 
-    def train(self, dataset, path):
+    def train(self, source_dataset, path):
         dir = Path(path)
         dir.mkdir(0o777, True, True)
 
-        # preprocessing data if procedure is not none
-        prepared_dataset = dataset
-        if self._preprocessing is not None:
-            prepared_dataset = dataset.map(self._preprocessing, num_parallel_calls=tf.data.AUTOTUNE)
-        prepared_dataset = prepared_dataset.cache()
+        # for now preprocessing and tf.data.Dataset is needed only for model based on effecient net
+        # and for  other models fitting all training data to GPU greatly helps
+        patches = None
+        labels = None
+        dataset = None
+        if self._preprocessing is None:
+            patches, labels = source_dataset.data()
+        else:
+            dataset = source_dataset.dataset().map(self._preprocessing, num_parallel_calls=tf.data.AUTOTUNE)
+            dataset = dataset.cache()
 
         init_attempts = 3
         best_model = None
         best_loss = tf.constant(100.0, dtype=tf.float32)
         for init_attempt in range(init_attempts):
             logging.info("Training model: attempt %d", init_attempt)
-            model, losses = self._model_trainer(prepared_dataset)
+            if dataset is None:
+                model, losses = self._model_trainer(patches, labels)
+            else:
+                model, losses = self._model_trainer(dataset)
 
             # save to log all metrics
             for epoch, loss in enumerate(losses):
@@ -52,14 +60,24 @@ class NoiseEstimator(object):
 
         self._model = best_model
 
-    def evaluate(self, dataset):
-        # preprocessing data if procedure is not none
-        prepared_dataset = dataset
-        if self._preprocessing is not None:
-            prepared_dataset = dataset.map(self._preprocessing)
+    def evaluate(self, source_dataset):
+        # for now preprocessing and tf.data.Dataset is needed only for model based on effecient net
+        # and for  other models fitting all training data to GPU greatly helps
+        patches = None
+        labels = None
+        dataset = None
+        if self._preprocessing is None:
+            patches, labels = source_dataset.data()
+        else:
+            dataset = source_dataset.dataset().map(self._preprocessing, num_parallel_calls=tf.data.AUTOTUNE)
+            dataset = dataset.cache()
 
-        # such small batch size slows down evaluation but it makes results more stable and accurate
-        metrics = self._model.evaluate(prepared_dataset, verbose = 0, return_dict=True)
+        if dataset is None:
+            # such small batch size slows down evaluation but it makes results more stable and accurate
+            metrics = self._model.evaluate(patches, labels, batch_size=1, verbose = 0, return_dict=True)
+        else:
+            metrics = self._model.evaluate(dataset, verbose = 0, return_dict=True)
+
         return metrics["sparse_categorical_accuracy"]
 
     def __call__(self, image):

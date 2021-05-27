@@ -1,2 +1,6 @@
-2021-05-26 21:32:59,716: <INFO> Trying efficent model
-2021-05-26 21:34:34,949: <INFO> Accuracy is 43.3%
+2021-05-27 10:39:41,126: <INFO> Trying chuah_et_al model
+2021-05-27 10:43:20,046: <INFO> Accuracy is 97.7%
+2021-05-27 10:43:20,047: <INFO> Trying simple model
+2021-05-27 10:47:10,693: <INFO> Accuracy is 98.3%
+2021-05-27 10:47:10,694: <INFO> Trying efficent model
+2021-05-27 10:47:48,324: <INFO> Accuracy is 43.1%

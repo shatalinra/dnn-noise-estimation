@@ -8,15 +8,14 @@ import logging
 
 def train_model(patches, labels):
     model =  tf.keras.Sequential(name = "chuan_et_al")
-    model.add(tf.keras.Input(shape = [32, 32, 3]))
-    model.add(tf.keras.layers.Conv2D(filters=20, kernel_size = 5, strides = 1, name = "conv-1"))
-    model.add(tf.keras.layers.MaxPool2D(pool_size = 2, name = "max-pool-1"))
-    model.add(tf.keras.layers.Conv2D(filters=50, kernel_size = 5, strides = 1, name = "conv-2"))
-    model.add(tf.keras.layers.MaxPool2D(pool_size = 2, name = "max-pool-2"))
-    model.add(tf.keras.layers.Conv2D(filters=500, kernel_size = 4, strides = 1, name = "conv-3"))
-    model.add(tf.keras.layers.ReLU(name = "conv-3-relu"))
-    model.add(tf.keras.layers.Conv2D(filters=10, kernel_size = 2, strides = 1, name = "conv-4"))
-    model.add(tf.keras.layers.Softmax(name = "conv-4-softmax"))
+    model.add(tf.keras.layers.Conv2D(input_shape=(32, 32, 3), filters=20, kernel_size = 5, strides = 1, name = "conv_1"))
+    model.add(tf.keras.layers.MaxPool2D(pool_size = 2, name = "max_pool_1"))
+    model.add(tf.keras.layers.Conv2D(filters=50, kernel_size = 5, strides = 1, name = "conv_2"))
+    model.add(tf.keras.layers.MaxPool2D(pool_size = 2, name = "max_pool_2"))
+    model.add(tf.keras.layers.Conv2D(filters=500, kernel_size = 4, strides = 1, name = "conv_3"))
+    model.add(tf.keras.layers.ReLU(name = "conv_3_relu"))
+    model.add(tf.keras.layers.Conv2D(filters=10, kernel_size = 2, strides = 1, name = "conv_4"))
+    model.add(tf.keras.layers.Softmax(name = "conv_4_softmax"))
     model.summary(print_fn=lambda x: logging.info(x))
 
     # the paper states learning rate equal to 0.01 was used but that really depends on type of optimizer
@@ -24,5 +23,5 @@ def train_model(patches, labels):
     model.compile(loss=tf.losses.SparseCategoricalCrossentropy(), optimizer=tf.optimizers.Adam(learning_rate = 0.0001))
 
     # the paper states that batch size of 100 and 100 epochs were used but I increased it to make learning more stable even though it slows down
-    history = model.fit(patches, labels, 256, 500, verbose=2)
+    history = model.fit(patches, labels, batch_size=256, epochs=500, verbose=2)
     return model, history.history["loss"]

@@ -18,15 +18,21 @@ def generate_image(source_image, noise_level):
     generated_image = (1.0 - noise_ratio) * source_image + noise_ratio * noise
     return generated_image
 
-def generate_noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stride, batch_size):
-    def generator():
-        # we need some caches in order to produce fixed size batches from variable amount of patches per image
-        patch_cache = None
-        label_cache = None
+class NoisyDataset:
+    """Dataset of noisy MS COCO training images with labels corresponding to levels of noise applied."""
 
+    def __init__(self, path_prefix, start_id, end_id, patch_size, patch_stride, batch_size):
+        self._path_prefix = path_prefix
+        self._start_id = start_id
+        self._end_id = end_id
+        self._patch_size = patch_size
+        self._patch_stride = patch_stride
+        self._batch_size = batch_size
+
+    def data_generator(self):
         # iteratve over ids and noise levels to generate patches with labels
-        for id in range(start_id, end_id):
-            image_path = Path(path_prefix + str(id).zfill(12) + ".jpg")
+        for id in range(self._start_id, self._end_id):
+            image_path = Path(self._path_prefix + str(id).zfill(12) + ".jpg")
 
             # not all ids are included into MS COCO training set, so simply skip them
             if not image_path.exists():
@@ -42,12 +48,41 @@ def generate_noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stri
 
                 images = tf.expand_dims(generated_image, 0)
 
-                patches = tf.image.extract_patches(images, [1, patch_size, patch_size, 1], [1, patch_stride, patch_stride, 1], [1, 1, 1, 1], 'VALID')
-                patches = tf.reshape(patches, [-1, patch_size, patch_size, 3])
+                sizes = [1, self._patch_size, self._patch_size, 1]
+                strides = [1, self._patch_stride, self._patch_stride, 1]
+                patches = tf.image.extract_patches(images,  sizes, strides, [1, 1, 1, 1], 'VALID')
+                patches = tf.reshape(patches, [-1, self._patch_size, self._patch_size, 3])
                 patches_count = patches.get_shape().as_list()[0]
                 labels = tf.constant(noise_level, dtype=tf.int32, shape=(patches_count))
+                yield patches, labels
 
-                # add new data to the caches
+    def data(self):
+        """ Collect all data in tensors which allows fitting small dataset on GPU completely"""
+        all_patches = None
+        all_labels = None
+
+        for patches, labels in self.data_generator():
+            if all_patches is None:
+                all_patches = patches
+            else:
+                all_patches = tf.concat([all_patches, patches], 0)
+            if all_labels is None:
+                all_labels = labels
+            else:
+                all_labels = tf.concat([all_labels, labels], 0)
+
+        return all_patches, all_labels
+
+    def dataset(self):
+        """ Generate tf.data.Dataset which uses CPU for all its internal processing and allows creating large datasets"""
+
+        def generator():
+            # we need some caches in order to produce fixed size batches from variable amount of patches per image
+            patch_cache = None
+            label_cache = None
+
+            # iterate over data and it to caches
+            for patches, labels in self.data_generator():
                 if patch_cache is None:
                     patch_cache = patches
                 else:
@@ -59,20 +94,16 @@ def generate_noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stri
 
                 # now slice the cache on fixed-size batches
                 total_count = label_cache.get_shape().as_list()[0]
-                total_batches = total_count // batch_size
+                total_batches = total_count // self._batch_size
                 for i in range(0, total_batches):
-                    patch_slice = patch_cache[i*batch_size:(i+1)*batch_size]
-                    label_slice = label_cache[i*batch_size:(i+1)*batch_size]
+                    patch_slice = patch_cache[i*self._batch_size:(i+1)*self._batch_size]
+                    label_slice = label_cache[i*self._batch_size:(i+1)*self._batch_size]
                     yield patch_slice, label_slice
 
                 # now we should leave only last incomplete slice in caches
-                patch_cache = patch_cache[total_batches*batch_size:total_count]
-                label_cache = label_cache[total_batches*batch_size:total_count]
+                patch_cache = patch_cache[total_batches*self._batch_size:total_count]
+                label_cache = label_cache[total_batches*self._batch_size:total_count]
 
-    return generator
-
-def noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stride, batch_size):
-    generator = generate_noisy_dataset(path_prefix, start_id, end_id, patch_size, patch_stride, batch_size)
-
-    output_signature = (tf.TensorSpec(shape=(batch_size, patch_size, patch_size, 3), dtype=tf.float32), tf.TensorSpec(shape=(batch_size), dtype=tf.int32))
-    return tf.data.Dataset.from_generator(generator, output_signature = output_signature)
+        patch_spec = tf.TensorSpec(shape=(self._batch_size, self._patch_size, self._patch_size, 3), dtype=tf.float32)
+        label_spec = tf.TensorSpec(shape=(self._batch_size), dtype=tf.int32)
+        return tf.data.Dataset.from_generator(generator, output_signature = (patch_spec, label_spec))
