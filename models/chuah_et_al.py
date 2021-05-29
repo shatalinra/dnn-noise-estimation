@@ -1,7 +1,7 @@
 # model taken from 2017 paper "Detection of Gaussian Noise and Its Level using Deep Convolutional Neural Network" by Chuah et al
-# but paper does not contain which optimizer or loss. Moreover looking at training dataset size and number of model parameters
-# it is very likely that researchers basically overfitted their model. In any case without details I cannot properly replicate their results,
-# so it would be something more of the inspired by their paper than actual thing they did.
+# but the paper does not specify optimizer or loss used. Moreover looking at training dataset size and number of model parameters
+# it is likely that researchers overfitted their model. In any case, without mentioned details it is impossible to properly replicate the results,
+# so it would be something more of the inspired by their paper.
 
 import tensorflow as tf
 import logging
@@ -19,7 +19,7 @@ def train_model(patches, labels):
     model.summary(print_fn=lambda x: logging.info(x))
 
     # the paper states learning rate equal to 0.01 was used but that really depends on type of optimizer
-    # for Adam it seems lesser values achieve actual results
+    # for Adam it seems lesser values achieve best results
     model.compile(loss=tf.losses.SparseCategoricalCrossentropy(), optimizer=tf.optimizers.Adam(learning_rate = 0.0001))
 
     # the paper states that batch size of 100 and 100 epochs were used but I increased it to make learning more stable even though it slows down

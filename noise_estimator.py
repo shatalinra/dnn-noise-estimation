@@ -25,8 +25,8 @@ class NoiseEstimator(object):
         dir = Path(path)
         dir.mkdir(0o777, True, True)
 
-        # for now preprocessing and tf.data.Dataset is needed only for model based on effecient net
-        # and for  other models fitting all training data to GPU greatly helps
+        # for now, preprocessing and tf.data.Dataset is needed only for model based on effecient net
+        # and for other models fitting all training data to GPU greatly accelerates the training
         patches = None
         labels = None
         dataset = None
@@ -62,7 +62,7 @@ class NoiseEstimator(object):
 
     def evaluate(self, source_dataset):
         # for now preprocessing and tf.data.Dataset is needed only for model based on effecient net
-        # and for  other models fitting all training data to GPU greatly helps
+        # and for  other models fitting all training data to GPU greatly accelerates the testing
         patches = None
         labels = None
         dataset = None

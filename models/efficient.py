@@ -10,7 +10,7 @@ def preprocess(patches, labels):
 
 def train_model(dataset):
     model = tf.keras.Sequential(name = "efficient")
-    model.add(tf.keras.layers.GlobalAveragePooling2D(input_shape=(7,7,1280), name="pool")) # our data should be efficient embedding
+    model.add(tf.keras.layers.GlobalAveragePooling2D(input_shape=(7,7,1280), name="pool"))
     model.add(tf.keras.layers.Dense(10, name="dense"))
     model.add(tf.keras.layers.Softmax(name = "softmax"))
     model.summary(print_fn=lambda x: logging.info(x))

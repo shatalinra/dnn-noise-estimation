@@ -1,16 +1,16 @@
 import os, sys, logging, argparse, random
-#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 import tensorflow as tf
 import matplotlib.pyplot as plt
+
 import data
 import noise_estimator
 from models import chuah_et_al, simple, efficient
 
 # parse command line args
-parser = argparse.ArgumentParser(description='Noise estimation DNN training script')
+parser = argparse.ArgumentParser(description='Noise estimation using few convolutional neural network')
 parser.add_argument('--log', help='Path to a log file.')
-parser.add_argument('--validate', action='store_true', help='Validate model based on image separate from training or testing data.')
+parser.add_argument('--validate', action='store_true', help='Validate models based on image separate from training or testing data.')
 script_args = parser.parse_args()
 
 # setup logging before anything else
@@ -41,18 +41,15 @@ sys.excepthook = handle_exception
 # giving message that log is indeed initialized
 print("Log initialized")
 
-#tf.debugging.set_log_device_placement(True)
-
 # common procedure for training, evaluating and validating model
 def try_model(name, patch_size, patch_stride, batch_size, preprocessing, model_trainer, validate):
     logging.info("Trying " + name + " model")
     estimator = noise_estimator.NoiseEstimator(patch_size, patch_stride, preprocessing, model_trainer)
     try:
-        # if everything will load fine we can go to testing the model
         estimator.load("trained_models/" + name)
 
         if validate:
-            # generate validation data by just taking image which should not be in train or test set
+            # generate validation data using image which should not be in train or test set
             clean_image = data.load_image('../coco/2017/train/000000001955.jpg')
             noise_level =  random.randint(0, 9)
             validation_image = data.generate_image(clean_image, noise_level)
@@ -65,17 +62,14 @@ def try_model(name, patch_size, patch_stride, batch_size, preprocessing, model_t
             plt.imshow(validation_image)
             plt.show()
 
-            # run both cases though estimator
+            # classify noise level on the image
             logging.info("Case witn noise level %d", noise_level)
             classes, confidences = estimator(validation_image)
             for i in range(0, 10):
                 logging.info("\tEstimated confidence in noise level %d: %.3f", classes[i], confidences[i])
 
         else:
-            # testing the model
-            # use CPU to support maybe longer but more representative evaluation on larger data
-            # generate testing data from a portion of MS COCO 2017 train images
-
+            # generate testing data using portion of MS COCO 2017 train images
             dataset = data.NoisyDataset("../coco/2017/train/", 154, 359, patch_size, patch_stride, batch_size)
 
             # now evaluate accuracy
@@ -84,7 +78,6 @@ def try_model(name, patch_size, patch_stride, batch_size, preprocessing, model_t
 
     except IOError:
         # looks like we don't have trained model, so we have to train one from scratch
-        # but first generate data on CPU in order to leave GPU RAM for model, training variables and batches
         dataset = data.NoisyDataset("../coco/2017/train/", 9, 151, patch_size, patch_stride, batch_size)
         estimator.train(dataset, "trained_models/" + name)
 
